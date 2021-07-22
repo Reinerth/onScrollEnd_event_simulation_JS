@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>scrollEndModule</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<script>
+'use strict';
+
+/**
+ * scrollEndModule: as JavaScript has no scroll-end-event and I needed one, 
+ * this module simulates a scrollEnd-event in JavaScript
+ * 
+ * The idea in spoken words: 
+ *      initially we have a given value "A"
+ *      onscroll (on start scrolling) the value changes to "B"
+ *      while an interval always changes the value back to "A".
+ *      In the interval ask before the value is set: 
+ *      if it is "B", means user scrolls, if it is "A" user stopped scrolling
+ * 
+ * @variable {number} precision - milliseconds of interval-frequency. 
+ *      The lower the value the more precise the scroll-end is.
+ * @method {object} myInterval - is an interval running while the user scrolls
+ * @variable {boolean} intervallStarted - The reason for the boolean is, that the interval 
+ *      has to be started only once (initial) when scroll starts and not all the time while scrolling
+ * @variable {string} scrollStatus - is a string containing the scroll-status
+ * @method {object} scrollStop - while the interval it sets a value ("notScrolling") to an element
+ * @method {object} scrollStart - starts an interval and sets the value to an element to "scrolls"
+ * @method {object} init - is the first method to be started and attaches a scroll-event to this document
+ */
+var scrollEndModule = {
+    precision: 100,
+    myInterval: null,
+    intervallStarted: false,
+    scrollStatus: 'notScrolling',
+    scrollStop: function(){
+        if (scrollEndModule.scrollStatus == 'notScrolling'){
+                // on scrollStop do here something
+                console.log('STOP scrolling');
+
+                clearInterval(scrollEndModule.myInterval);
+                scrollEndModule.intervallStarted = false;
+            }
+            scrollEndModule.scrollStatus = 'notScrolling';
+    },
+    scrollStart: function(){
+        // The reason for the boolean is, that the interval 
+        // has to be started only once (initial) when scroll starts
+        // and not all the time while scrolling
+        if (scrollEndModule.intervallStarted == false){
+            // on scrollStart do here something
+            console.log('START scrolling');
+
+            scrollEndModule.myInterval = setInterval(scrollEndModule.scrollStop, scrollEndModule.precision);
+            scrollEndModule.intervallStarted = true;
+        }
+        // while scrolling set the value to "scrolls"
+        scrollEndModule.scrollStatus = 'scrolls';
+    },
+    // START
+    init: function(){
+        // Attaches the scroll-event to document
+        document.addEventListener("scroll", scrollEndModule.scrollStart, false);
+    }
+};
+// START
+scrollEndModule.init();
+</script>
+
+<div>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+</body>
+</html>
